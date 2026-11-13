@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lucky Loop Film Front Page</title>
+<meta name="description" content="Lucky Loop Mini Golf: eighteen Houston-themed holes, open late, with an upside-down loop on Hole 15. An FBLA class project. Lucky Loop is fictional.">
+<meta name="theme-color" content="#0A1713">
+<meta name="format-detection" content="telephone=no, address=no">
+<meta property="og:title" content="Lucky Loop Mini Golf · Houston, Texas">
+<meta property="og:description" content="Eighteen Houston-themed holes, open late, with an upside-down loop on Hole 15. An FBLA class project. Lucky Loop is fictional.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 62'%3E%3Crect x='8' y='4' width='5' height='52' rx='2.5' fill='%231F6F5C'/%3E%3Cpath d='M13 6 L42 15 L13 25 Z' fill='%23F2A541'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..700&family=Instrument+Serif:ital@1&display=swap">
+<style>
+:root{
+  /* layout idea: one dark course at night. Thin uppercase headings with an italic serif second line, small text on an offset column, hairlines instead of boxes, pictures set edge to edge */
+  color-scheme:dark;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:"Instrument Serif","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --night:#0A1713; --film-ink:#06110E; --tile:#10231D; --chalk:#FBF7EE; --chalk-2:#A9B6AE; --ink:#12241E; --orange:#F2A541;
+  --rule:rgba(251,247,238,.16);
+  --edge:clamp(22px,6.5vw,96px);
+  --nav-h:64px;
+  /* motion: quick, even fades for the interface and slower ones for pictures; nothing slides in from off the page */
+  --t-ui:.3s ease-in-out;                      /* colour, hairlines, the header bar */
+  --t-press:.3s ease-in;                       /* buttons filling */
+  --t-media:.5s ease;                          /* pictures fading in as they arrive */
+  --t-zoom:.5s ease-in-out;                    /* pictures easing larger under the pointer */
+  --t-film:1s ease-in-out;                     /* the film arriving */
+  --t-drawer:.35s cubic-bezier(.45,0,.55,1);   /* panels opening */
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--nav-h) + 12px);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--night);color:var(--chalk);font:400 1rem/1.5 var(--body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,h4,p,dl,dd,figure{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+svg text{font-family:var(--display)}
+.wrap{margin-inline:var(--edge)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--chalk);color:var(--ink);padding:10px 16px;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+:focus-visible{outline:1px solid var(--orange);outline-offset:4px}
+
+/* ---------- type ---------- */
+.know h2,.count__head{font-family:var(--display);font-size:clamp(2rem,3.9vw,3.5rem);font-weight:200;line-height:1.02;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
+.count__head em,.film__title em{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.1em;letter-spacing:0}
+.lede{font-size:1.0625rem;font-weight:300;line-height:1.38;letter-spacing:.012em;color:rgba(251,247,238,.88);max-width:32ch}
+.fine{font-size:.8125rem;line-height:1.5;color:var(--chalk-2)}
+.eyebrow,.hole__no,.hole__meta,.mini h3,.steps .n,.count span,.stats span,.foot__grid b,.film__note,.film__slate,.rail-count,.offer b,.rules__body h4{
+  font-family:var(--body);font-size:.6875rem;font-weight:600;line-height:1.5;letter-spacing:.2em;text-transform:uppercase;color:var(--chalk-2);font-variant-numeric:tabular-nums}
+
+/* ---------- links and buttons ---------- */
+.more,.film__link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:.875rem;font-weight:500;letter-spacing:.015em;color:var(--chalk);text-decoration:none}
+.more::before,.film__link::before{content:"";width:48px;height:1px;background:currentColor;transition:width var(--t-ui),background-color var(--t-press)}
+.more:hover::before,.film__link:hover::before{width:72px;background:var(--orange)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;border:1px solid rgba(251,247,238,.5);background:transparent;color:var(--chalk);
+  font:inherit;font-size:.8125rem;font-weight:500;letter-spacing:.04em;text-decoration:none;cursor:pointer;transition:color var(--t-press),background-color var(--t-press),border-color var(--t-press);-webkit-tap-highlight-color:transparent}
+.btn:hover{background:var(--chalk);border-color:var(--chalk);color:var(--ink)}
+.btn--orange{background:var(--chalk);border-color:var(--chalk);color:var(--ink)}
+.btn--orange:hover{background:transparent;color:var(--chalk)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.round{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgba(251,247,238,.5);border-radius:50%;background:transparent;color:var(--chalk);cursor:pointer;
+  transition:opacity var(--t-media),color var(--t-press),background-color var(--t-press);-webkit-tap-highlight-color:transparent}
+.round svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.round:hover{background:var(--chalk);color:var(--ink)}
+.round[disabled]{opacity:.28;cursor:default;background:transparent;color:var(--chalk)}
+
+/* ---------- header: bare on the film, a chalk bar slides down once the film is gone ---------- */
+.nav{position:sticky;top:0;z-index:50;color:var(--chalk);transition:color var(--t-ui)}
+.nav::before{content:"";position:absolute;inset:0;background:var(--chalk);transform:translateY(-102%);transition:transform var(--t-ui)}
+.nav.is-solid,.nav.is-ink{color:var(--ink)}
+.nav.is-solid::before{transform:none}
+.nav__in{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;height:var(--nav-h)}
+.nav__links{display:flex;gap:clamp(16px,2.2vw,32px)}
+.nav__links a,.nav__cta{display:inline-flex;align-items:center;min-height:44px;font-size:.8125rem;letter-spacing:.015em;color:inherit;text-decoration:none;opacity:.82;transition:opacity var(--t-ui)}
+.nav__links a:hover,.nav__cta:hover{opacity:1}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:.8125rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:inherit}
+.logo svg{width:13px;height:18px}
+.nav__cta{justify-self:end}
+.nav__cta span{padding-bottom:3px;border-bottom:1px solid currentColor}
+@media (max-width:700px){.nav__links{display:none}.nav__in{grid-template-columns:auto 1fr}}
+
+/* ---------- plates: full-screen films, one to a section ---------- */
+.plate{--shade:6,17,14;--plate-bg:radial-gradient(80% 70% at 56% 40%,#17392F 0,var(--night) 60%,var(--film-ink) 100%);
+  position:relative;isolation:isolate;height:100vh;height:100svh;min-height:560px;max-height:1240px;overflow:hidden;color:var(--chalk);background:var(--plate-bg)}
+/* each plate is its own place: its own backdrop while the picture arrives, its own shade behind the words */
+.plate[data-shot="course"]{--shade:241,231,211;--plate-bg:#F1E7D3;color:var(--ink)}
+.plate[data-shot="visit"]{--shade:14,11,38;--plate-bg:linear-gradient(180deg,#151146 0,#5B2F73 62%,#E8775C 100%)}
+.plate[data-shot="wall"]{--shade:14,9,6;--plate-bg:radial-gradient(70% 60% at 60% 45%,#3A2619 0,#0D0806 80%)}
+.plate[data-shot="end"]{--shade:4,4,4;--plate-bg:radial-gradient(60% 55% at 60% 50%,#2A1704 0,#040404 75%)}
+.plate--film{margin-top:calc(-1 * var(--nav-h))}
+.plate__stage{position:absolute;inset:0}
+.plate__stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity var(--t-film)}
+.plate.is-live .plate__stage canvas{opacity:1}
+/* filmed plates: real footage in place of the drawn scene; the drawn scene stays as the fallback */
+.plate__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%;opacity:0;transition:opacity var(--t-film)}
+.plate.is-rolling .plate__video{opacity:1}
+.plate.is-flat[data-video] .plate__stage{display:block}
+.plate.is-flat[data-video]::after{display:none}
+/* the wordmark: crisp page type over the footage; the first O of LOOP is the orange loop */
+.mark{display:flex;align-items:center;margin:0 0 28px;font-family:var(--display);font-weight:200;font-size:clamp(2.6rem,5.4vw,5rem);line-height:1;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--chalk)}
+.mark span{display:inline-block;flex:none}
+.mark__gap{width:.32em}
+.mark__o{width:.74em;height:.74em;margin:0 .07em;border:.1em solid var(--orange);border-radius:50%;box-shadow:0 0 .35em rgba(242,106,18,.55),inset 0 0 .25em rgba(242,106,18,.35)}
+.paced .mark span{opacity:0;transform:translateY(.12em);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(.35s + var(--k,0) * .07s)}
+.paced .plate.is-in .mark span{opacity:1;transform:none}
+@media (max-width:700px){.mark{font-size:clamp(2.2rem,11vw,3rem);margin-bottom:20px}}
+@media (prefers-reduced-motion:reduce){.paced .mark span{transition:none;opacity:1;transform:none}}
+.plate.is-still .plate__stage{background:var(--still) center/cover no-repeat}
+.plate.is-still .film__bar,.plate.is-still .film__progress{display:none}
+.film__shade{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(54% 66% at 13% 56%,rgba(var(--shade),.74) 0,rgba(var(--shade),.42) 52%,rgba(var(--shade),0) 100%),
+  linear-gradient(0deg,rgba(var(--shade),.6) 0,rgba(var(--shade),0) 24%),
+  linear-gradient(180deg,rgba(var(--shade),.62) 0,rgba(var(--shade),0) 17%)}
+.plate[data-tone="light"] .film__shade{background:radial-gradient(52% 66% at 12% 56%,rgba(var(--shade),.86) 0,rgba(var(--shade),.52) 52%,rgba(var(--shade),0) 100%)}
+.film__black{position:absolute;inset:0;background:rgb(var(--shade));opacity:0;pointer-events:none}
+.film__copy{position:absolute;left:var(--edge);top:38%;width:min(30rem,40vw);text-shadow:0 1px 24px rgba(var(--shade),.75)}
+.plate--film .film__copy{width:min(23rem,31vw)}
+.plate[data-tone="light"] .film__copy{text-shadow:none}
+.film__copy .eyebrow{margin-bottom:18px;color:inherit;opacity:.72}
+.film__copy .film__link{color:inherit}
+.film__title{font-family:var(--display);font-size:clamp(2rem,3.6vw,3.25rem);font-weight:200;line-height:1;letter-spacing:-.012em;text-transform:uppercase}
+.film__title span{display:block}
+.film__text{margin-top:24px;max-width:24rem;font-size:1.0625rem;font-weight:300;line-height:1.36;letter-spacing:.012em;opacity:.94}
+.film__links{display:flex;flex-direction:column;align-items:flex-start;margin-top:14px}
+.film__note{position:absolute;left:var(--edge);bottom:30px;color:rgba(251,247,238,.62);font-size:.625rem}
+.film__bar{position:absolute;right:calc(var(--edge) - 14px);bottom:14px;display:flex;align-items:center;gap:2px}
+.film__slate{margin-right:12px;color:rgba(251,247,238,.62);font-size:.625rem}
+.film__ctl{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer;opacity:.82;
+  transition:opacity var(--t-ui);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.film__ctl svg{width:16px;height:16px;fill:currentColor}
+.film__ctl:hover{opacity:1}
+.film__ctl[data-state="playing"] .i-play,.film__ctl[data-state="paused"] .i-pause{display:none}
+.film__progress{position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(251,247,238,.1)}
+.film__progress i{display:block;height:100%;background:var(--orange);transform:scaleX(0);transform-origin:0 50%}
+.plate.is-flat .plate__stage,.plate.is-flat .film__bar,.plate.is-flat .film__progress{display:none}
+.plate.is-flat::after{content:"";position:absolute;z-index:-1;right:14%;top:50%;width:min(40vw,380px);aspect-ratio:1;border:26px solid var(--orange);border-radius:50%;transform:translateY(-50%)}
+
+/* ---------- panels: each block of content gets the screen to itself ---------- */
+.panel{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding-block:clamp(96px,14vh,168px)}
+.panel>.wrap{min-width:0}
+/* a section arrives as one slow fade, its parts a beat apart; the words are never moved */
+.paced .panel>.wrap>*,.paced .plate .film__copy>*{opacity:0;transition:opacity var(--t-film);transition-delay:calc(var(--i,0) * .16s)}
+.paced .panel.is-in>.wrap>*,.paced .plate.is-in .film__copy>*{opacity:1}
+
+/* ---------- the count ---------- */
+.count-panel>.wrap{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:48px 56px}
+.count__head small{display:block;margin-top:16px;font-family:var(--body);font-size:.875rem;font-weight:400;letter-spacing:.012em;text-transform:none;color:var(--chalk-2)}
+.count{display:flex;gap:clamp(20px,4vw,56px)}
+.count div{display:flex;flex-direction:column;gap:10px}
+.count b,.stats b{font-family:var(--display);font-size:clamp(2.75rem,7.4vw,6.5rem);font-weight:200;line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+
+/* ---------- sections ---------- */
+.stats{display:flex;gap:clamp(28px,6vw,88px);margin:clamp(20px,3vw,40px) 0 clamp(40px,6vw,80px)}
+.stats li{display:flex;flex-direction:column;gap:10px}
+.stats b{font-size:clamp(2.25rem,4.4vw,3.75rem)}
+
+/* scorecard, ruled like paper */
+.score-scroll{overflow-x:auto;border-bottom:1px solid var(--rule)}
+.score{width:100%;min-width:560px;table-layout:fixed;border-collapse:collapse;text-align:center;font-size:.875rem;font-variant-numeric:tabular-nums}
+.score th,.score td{padding:13px 4px;border-top:1px solid var(--rule);font-weight:400}
+.score tr>:first-child{width:5.5em;text-align:left;font-size:.6875rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--chalk-2)}
+.score .hd th{font-weight:600}
+.score .hd a{display:block;color:inherit;text-decoration:none;transition:color var(--t-ui)}
+.score .hd a:hover{color:var(--orange)}
+.score .hd .is-loop a{color:var(--orange)}
+.score .tot{font-weight:600;color:var(--chalk-2)}
+
+/* the holes, on a rail that runs off the right edge */
+.rail-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.rail-ctl{display:flex;gap:10px}
+.holes{position:relative;display:flex;gap:3px;margin-right:calc(-1 * var(--edge));padding-right:var(--edge);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+@media (prefers-reduced-motion:no-preference){.holes{scroll-behavior:smooth}}
+.holes::-webkit-scrollbar{display:none}
+.hole{position:relative;flex:0 0 clamp(248px,27vw,420px);scroll-snap-align:start}
+.hole__art,.ace__art{overflow:hidden;background:var(--tile)}
+.hole__art{display:grid;place-items:center;aspect-ratio:4/5;margin-bottom:20px}
+.hole__art .art,.ace__art .art{width:100%;height:auto;transition:transform var(--t-zoom),opacity var(--t-media)}
+.hole:hover .art,.ace:hover .art{transform:scale(1.06)}
+.fade-in .art.is-waiting{opacity:0}
+.hole>:not(.hole__art){padding-right:22px}
+.art--plan{display:block;width:100%;height:100%}
+.plan__no{font-family:var(--display);font-weight:200;font-size:64px;letter-spacing:-.02em;fill:var(--chalk);opacity:.9}
+.plan__dim{font-family:var(--body);font-size:10px;font-weight:600;letter-spacing:.24em;fill:var(--chalk-2);text-anchor:middle}
+.hole:hover .art--plan{transform:none}
+.hole:hover .plan__line{stroke-opacity:.9}
+.hole__no{display:flex;gap:12px}
+.tag,.hole--15 .hole__no{color:var(--orange)}
+.hole__name{margin-top:8px;font-family:var(--display);font-size:1.25rem;font-weight:400;letter-spacing:-.005em}
+.hole__line{margin-top:6px;max-width:30ch;font-size:.875rem;color:var(--chalk-2)}
+.hole__meta{margin-top:14px}
+
+/* visit */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px clamp(32px,8vw,128px)}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.card{padding-top:28px;border-top:1px solid var(--rule)}
+.card h3{font-family:var(--display);font-size:1.75rem;font-weight:200;line-height:1.05;text-transform:uppercase}
+.card .say{margin-top:8px;font-size:.875rem;color:var(--chalk-2)}
+.status{display:inline-flex;align-items:center;gap:10px;margin-top:16px;font-size:.8125rem;font-weight:500}
+.status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.status.is-closed::before{background:var(--chalk-2)}
+.rows{margin-top:24px}
+.rows div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--rule);font-size:.9375rem}
+.rows dd{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.rows .is-today dt::after{content:"Today";margin-left:12px;font-size:.625rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}
+.notes{display:grid;gap:4px;margin-top:8px;padding-top:16px;border-top:1px solid var(--rule)}
+.offer{margin-top:8px;padding-top:16px;border-top:1px solid var(--rule);font-size:.9375rem}
+.offer b{display:block;margin-bottom:4px;color:var(--orange)}
+
+/* good to know */
+.know h2{margin-bottom:clamp(40px,5vw,72px)}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px clamp(24px,3vw,56px)}
+@media (max-width:1040px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.grid4{grid-template-columns:1fr}}
+.mini{display:flex;flex-direction:column;padding-top:24px;border-top:1px solid var(--rule)}
+.mini .big{margin-top:14px;font-family:var(--display);font-size:1.5rem;font-weight:300;line-height:1.12;letter-spacing:-.01em}
+.mini p{margin-top:12px;font-size:.875rem;color:var(--chalk-2)}
+.mini .big{color:var(--chalk)}
+.mini .price{margin-top:auto;padding-top:22px}
+.mini .price b{display:block;font-family:var(--display);font-size:2.25rem;font-weight:200;line-height:1;color:var(--chalk)}
+.mini .more{margin-top:10px}
+
+/* the wall */
+.aces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+@media (max-width:760px){.aces{grid-template-columns:1fr}}
+.ace{height:100%;background:var(--tile)}
+.ace__art{display:grid;place-items:center;aspect-ratio:560/400}
+.ace__art--photo{position:relative}
+.ace__art--photo .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ace__art--photo::after,.ace--you .ace__art::after{content:"";position:absolute;inset:14px;border:1px solid rgba(242,165,65,.42);pointer-events:none}
+.ace--you .ace__art{position:relative}
+.ace--you .ace__art::after{border-style:dashed;border-color:rgba(251,247,238,.22)}
+.ace figcaption{padding:18px 22px 24px}
+.ace b{display:block;font-family:var(--display);font-size:1.125rem;font-weight:400}
+.ace span{font-size:.8125rem;color:var(--chalk-2)}
+.ace--you{background:transparent;outline:1px solid var(--rule);outline-offset:-1px}
+.ace--you .ace__art{background:transparent;font-family:var(--serif);font-style:italic;font-size:6rem;color:var(--chalk-2)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px clamp(24px,3vw,56px);margin-top:clamp(56px,7vw,104px)}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.steps li{padding-top:24px;border-top:1px solid var(--rule)}
+.steps h3{margin-top:14px;font-family:var(--display);font-size:1.5rem;font-weight:300;line-height:1.12;letter-spacing:-.01em}
+.steps p:not(.n){margin-top:10px;max-width:34ch;font-size:.875rem;color:var(--chalk-2)}
+.hash{font-weight:600;color:var(--chalk)}
+.rules{margin-top:clamp(56px,7vw,104px);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.rules summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rules summary::-webkit-details-marker{display:none}
+.rules summary h3{font-family:var(--display);font-size:1.5rem;font-weight:300;letter-spacing:-.01em}
+.rules summary p{margin-top:4px;font-size:.875rem;color:var(--chalk-2)}
+.plus{flex:none;position:relative;width:44px;height:44px;border:1px solid rgba(251,247,238,.5);border-radius:50%;transition:transform var(--t-drawer)}
+.plus::before,.plus::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1px;margin-left:-6px;background:var(--chalk)}
+.plus::after{transform:rotate(90deg)}
+.rules[open]:not(.is-closing) .plus{transform:rotate(45deg)}
+.rules__body{overflow:hidden;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px clamp(24px,5vw,80px);padding:6px 0 36px}
+@media (max-width:760px){.rules__body{grid-template-columns:1fr}}
+.rules__body h4{margin-bottom:8px}
+.rules__body p{font-size:.875rem;color:var(--chalk-2);max-width:60ch}
+
+/* footer */
+.foot{background:var(--film-ink);color:var(--chalk-2);font-size:.8125rem;padding:56px 0 40px;border-top:1px solid var(--rule)}
+.foot__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px;padding-bottom:40px;border-bottom:1px solid var(--rule)}
+@media (max-width:760px){.foot__grid{grid-template-columns:1fr 1fr}}
+.foot__grid p{color:var(--chalk)}
+.foot__grid b{display:block;margin-bottom:8px}
+.foot__grid a{text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px;transition:border-color var(--t-ui)}
+.foot__grid a:hover{border-bottom-color:var(--orange)}
+.foot__base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-top:20px}
+
+@media (max-width:640px){
+  .film__shade,.plate[data-tone="light"] .film__shade{background:linear-gradient(0deg,rgba(var(--shade),.94) 0,rgba(var(--shade),.74) 34%,rgba(var(--shade),0) 58%),linear-gradient(180deg,rgba(var(--shade),.62) 0,rgba(var(--shade),0) 16%)}
+  .film__copy,.plate--film .film__copy{top:auto;bottom:84px;width:auto;right:var(--edge)}
+  .film__title{font-size:clamp(2rem,9.4vw,2.6rem)}
+  .film__text{font-size:1rem}
+  .film__note{bottom:22px;max-width:60%}
+  .film__bar{bottom:8px}
+  .film__slate{display:none}
+  .count{gap:18px}
+}
+/* opening card: the name on chalk, then it clears to the first film */
+.intro{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:var(--chalk);color:var(--ink);pointer-events:none;animation:intro-out .9s ease-in-out .9s forwards}
+.intro .logo{font-size:1.0625rem;gap:14px}
+.intro .logo svg{width:17px;height:24px}
+@keyframes intro-out{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}.intro{display:none}}
+@media (prefers-contrast:more){.fine,.lede,.hole__line,.hole__meta,.stats span,.count span,.mini p,.steps p,.rules__body p{color:inherit}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="intro" aria-hidden="true"><span class="logo"><svg class="flag-icon" viewBox="0 0 46 62" aria-hidden="true" focusable="false">
+  <rect x="8" y="4" width="5" height="52" rx="2.5" fill="currentColor"/>
+  <path d="M13 6 L42 15 L13 25 Z" fill="#F2A541"/>
+  <ellipse cx="11" cy="57" rx="10" ry="4" fill="currentColor" opacity=".5"/>
+</svg>Lucky Loop<span class="vh"> · Houston, Texas</span></span></div>
+<header class="nav">
+  <div class="wrap nav__in">
+    
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#course">Course</a><a href="#visit">Visit</a><a href="#wall">The Wall</a><a href="#rules">Rules</a>
+    </nav>
+    <a class="logo" href="#top"><svg class="flag-icon" viewBox="0 0 46 62" aria-hidden="true" focusable="false">
+  <rect x="8" y="4" width="5" height="52" rx="2.5" fill="currentColor"/>
+  <path d="M13 6 L42 15 L13 25 Z" fill="#F2A541"/>
+  <ellipse cx="11" cy="57" rx="10" ry="4" fill="currentColor" opacity=".5"/>
+</svg>Lucky Loop<span class="vh"> · Houston, Texas</span></a>
+    <a class="nav__cta" href="#visit"><span>Plan a visit</span></a>
+  </div>
+</header>
+
+<main id="main">
+<section class="plate plate--film" id="top" data-shot="film" data-video aria-labelledby="hero-title">
+  <div class="plate__stage" aria-hidden="true"><video class="plate__video" data-src="film/top.mp4" poster="film/top.jpg" muted loop playsinline disablepictureinpicture preload="auto"></video></div>
+  <div class="film__shade" aria-hidden="true"></div>
+  <div class="film__black" aria-hidden="true"></div>
+  <div class="film__copy">
+    <p class="mark" aria-hidden="true"><span>L</span><span>u</span><span>c</span><span>k</span><span>y</span><span class="mark__gap"></span><span>L</span><span class="mark__o"></span><span>o</span><span>p</span></p>
+    <h1 class="film__title" id="hero-title"><span class="vh">Lucky Loop: </span>Mini golf <span>that goes</span> <em>upside down</em></h1>
+    <p class="film__text">Eighteen Houston-themed holes, open late. The fifteenth sends your ball all the way around a loop. Opening Saturday, May 15.</p>
+    <div class="film__links">
+      <a class="film__link" href="#visit">Plan a visit</a>
+    </div>
+  </div>
+  <p class="vh">Film: a palm-shaded mini-golf course in daylight. A player lines up, taps a ball toward the yellow flag, and the flag is lifted from the cup.</p>
+  <p class="film__note">FBLA class project · Lucky Loop is fictional</p>
+  <div class="film__bar">
+      <p class="film__slate">Hole 15 · Par 3 · 24 ft · 1 loop</p>
+      <button class="film__ctl" type="button" id="film-replay" aria-label="Putt again: restart the film">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5M4.9 1.9v2.8h2.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="film__ctl js-film-toggle" type="button" aria-label="Pause the films" data-state="playing">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4.4" y="3.5" width="1.6" height="9"/><rect x="10" y="3.5" width="1.6" height="9"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L12.6 8z"/></svg>
+      </button>
+  </div>
+  <div class="film__progress" aria-hidden="true"><i id="film-progress"></i></div>
+</section>
+
+<section class="panel count-panel" aria-labelledby="count-head">
+  <div class="wrap">
+    <p class="count__head" id="count-head">Until the first <em>tee time</em><small>Saturday, May 15, 2027 at 10 am Central</small></p>
+    <div class="count" role="timer" aria-labelledby="count-head" id="count">
+      <div><b data-u="d">--</b><span>days</span></div>
+      <div><b data-u="h">--</b><span>hours</span></div>
+      <div><b data-u="m">--</b><span>minutes</span></div>
+      <div><b data-u="s">--</b><span>seconds</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="plate" id="course" data-shot="course" data-video data-tone="light" aria-labelledby="course-title">
+  <div class="plate__stage" aria-hidden="true"><video class="plate__video" data-src="film/course.mp4" poster="film/course.jpg" muted loop playsinline disablepictureinpicture preload="none"></video></div>
+  <div class="film__shade" aria-hidden="true"></div>
+  <div class="film__black" aria-hidden="true"></div>
+  <div class="film__copy">
+    <p class="eyebrow">The course</p>
+    <h2 class="film__title" id="course-title">Eighteen holes. <em>All Houston.</em></h2>
+    <p class="film__text">Each hole is a small piece of the city. Play them in order, at night if you like.</p>
+    <div class="film__links">
+      <a class="film__link" href="#scorecard">See the scorecard</a>
+    </div>
+  </div>
+  <p class="vh">Film: close on a player's feet as a green ball is putted across dark turf, then a black ball rolls slowly across the green and drops into the cup.</p>
+  <div class="film__bar">
+      <button class="film__ctl js-film-toggle" type="button" aria-label="Pause the films" data-state="playing">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4.4" y="3.5" width="1.6" height="9"/><rect x="10" y="3.5" width="1.6" height="9"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L12.6 8z"/></svg>
+      </button>
+  </div>
+</section>
+
+<section class="panel" id="scorecard" aria-label="Scorecard">
+  <div class="wrap">
+    <p class="eyebrow">Par and feet, hole by hole</p>
+    <ul class="stats">
+        <li><b>18</b><span>holes</span></li>
+        <li><b>48</b><span>par</span></li>
+        <li><b>1</b><span>loop</span></li>
+      </ul>
+    <div class="score-scroll" role="region" aria-label="Scorecard" tabindex="0">
+      <table class="score">
+        <caption class="vh">Scorecard: par and length in feet for each hole</caption>
+        <tbody>
+          <tr class="hd"><th scope="row">Hole</th><th><a href="#hole-01">1</a></th><th><a href="#hole-02">2</a></th><th><a href="#hole-03">3</a></th><th><a href="#hole-04">4</a></th><th><a href="#hole-05">5</a></th><th><a href="#hole-06">6</a></th><th><a href="#hole-07">7</a></th><th><a href="#hole-08">8</a></th><th><a href="#hole-09">9</a></th><th class="tot">Out</th><th class="tot"></th></tr>
+          <tr><th scope="row">Par</th><td>2</td><td>3</td><td>3</td><td>2</td><td>3</td><td>3</td><td>2</td><td>3</td><td>3</td><td class="tot">24</td><td class="tot"></td></tr>
+          <tr><th scope="row">Feet</th><td>18</td><td>28</td><td>30</td><td>20</td><td>26</td><td>24</td><td>15</td><td>32</td><td>27</td><td class="tot">220</td><td class="tot"></td></tr>
+          <tr class="hd"><th scope="row">Hole</th><th><a href="#hole-10">10</a></th><th><a href="#hole-11">11</a></th><th><a href="#hole-12">12</a></th><th><a href="#hole-13">13</a></th><th><a href="#hole-14">14</a></th><th class="is-loop"><a href="#hole-15">15<span class="vh"> (the loop)</span></a></th><th><a href="#hole-16">16</a></th><th><a href="#hole-17">17</a></th><th><a href="#hole-18">18</a></th><th class="tot">In</th><th class="tot">Total</th></tr>
+          <tr><th scope="row">Par</th><td>2</td><td>3</td><td>3</td><td>2</td><td>3</td><td>3</td><td>3</td><td>2</td><td>3</td><td class="tot">24</td><td class="tot">48</td></tr>
+          <tr><th scope="row">Feet</th><td>22</td><td>25</td><td>29</td><td>19</td><td>26</td><td>24</td><td>31</td><td>21</td><td>22</td><td class="tot">219</td><td class="tot">439</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="holes-panel" aria-label="The 18 holes">
+  <div class="wrap">
+    <div class="rail-head">
+      <p class="rail-count" aria-hidden="true"><span id="holes-at">01</span> / 18</p>
+      <div class="rail-ctl">
+        <button class="round" type="button" id="holes-prev" aria-label="Earlier holes" aria-controls="holes"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button class="round" type="button" id="holes-next" aria-label="Later holes" aria-controls="holes"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+    </div>
+    <ol class="holes" id="holes" tabindex="0" aria-label="The 18 holes">
+<li class="hole" id="hole-01">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Launch-pad ramp with a countdown light"><text class="plan__no" x="34" y="92">01</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M186 330 L200 318 L214 330" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M186 312 L200 300 L214 312" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M186 294 L200 282 L214 294" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><circle cx="244" cy="300" r="5" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="244" cy="300" r="11" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="0.4"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">18 FT</text></svg></div>
+  <p class="hole__no">Hole 01</p>
+  <h3 class="hole__name"><span class="vh">Hole 1: </span>Space City</h3>
+  <p class="hole__line">Wait for the countdown light, then putt. The ramp does the rest.</p>
+  <p class="hole__meta">Par 2 · 18 ft</p>
+</li>
+<li class="hole" id="hole-02">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="S-curve beside a running water channel"><text class="plan__no" x="34" y="92">02</text><path d="M140 440 C140 340 262 350 262 270 C262 190 150 200 160 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 C140 340 262 350 262 270 C262 190 150 200 160 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 C140 340 262 350 262 270 C262 190 150 200 160 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M140 440 C140 340 262 350 262 270 C262 190 150 200 160 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M300 420 c8 -8 16 8 24 0 s16 8 24 0 M300 400 c8 -8 16 8 24 0 s16 8 24 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.9" stroke-linecap="round" stroke-linejoin="round" /><path d="M318 380 C318 300 300 250 290 170" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 6"/><rect x="131" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="140" cy="426" r="4" fill="#FBF7EE"/><circle cx="160" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M160 140 L160 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M160 94 L180 101 L160 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">28 FT</text></svg></div>
+  <p class="hole__no">Hole 02</p>
+  <h3 class="hole__name"><span class="vh">Hole 2: </span>Bayou Bend</h3>
+  <p class="hole__line">Follow the water. It already knows the way.</p>
+  <p class="hole__meta">Par 3 · 28 ft</p>
+</li>
+<li class="hole" id="hole-03">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Stacked overpass ramps, like a freeway interchange"><text class="plan__no" x="34" y="92">03</text><path d="M130 440 L130 340 C130 270 270 300 270 220 L270 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M130 440 L130 340 C130 270 270 300 270 220 L270 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M130 440 L130 340 C130 270 270 300 270 220 L270 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M130 440 L130 340 C130 270 270 300 270 220 L270 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M90 250 C160 230 240 330 320 300" stroke="#F2A541" stroke-width="7" fill="none" opacity="0.22" stroke-linecap="round" stroke-linejoin="round" /><path d="M90 250 C160 230 240 330 320 300" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M84 330 C170 360 230 230 330 222" stroke="#F2A541" stroke-width="7" fill="none" opacity="0.22" stroke-linecap="round" stroke-linejoin="round" /><path d="M84 330 C170 360 230 230 330 222" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><rect x="121" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="130" cy="426" r="4" fill="#FBF7EE"/><circle cx="270" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M270 140 L270 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M270 94 L290 101 L270 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">30 FT</text></svg></div>
+  <p class="hole__no">Hole 03</p>
+  <h3 class="hole__name"><span class="vh">Hole 3: </span>The Spaghetti Bowl</h3>
+  <p class="hole__line">Three levels of ramp. Only one of them ends at the cup.</p>
+  <p class="hole__meta">Par 3 · 30 ft</p>
+</li>
+<li class="hole" id="hole-04">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Flower-bed bumpers"><text class="plan__no" x="34" y="92">04</text><path d="M190 440 L190 270 L250 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M190 440 L190 270 L250 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M190 440 L190 270 L250 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M190 440 L190 270 L250 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="152" cy="400" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="158" cy="404" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="147" cy="405" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="152" cy="330" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="158" cy="334" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="147" cy="335" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="228" cy="380" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="234" cy="384" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="223" cy="385" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="222" cy="240" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="228" cy="244" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="217" cy="245" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="290" cy="210" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="296" cy="214" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="285" cy="215" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="160" cy="250" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="166" cy="254" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><circle cx="155" cy="255" r="3.2" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="0.9"/><rect x="181" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="190" cy="426" r="4" fill="#FBF7EE"/><circle cx="250" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M250 140 L250 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M250 94 L270 101 L250 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">20 FT</text></svg></div>
+  <p class="hole__no">Hole 04</p>
+  <h3 class="hole__name"><span class="vh">Hole 4: </span>Bluebonnet Field</h3>
+  <p class="hole__line">Texas in April, edged in flower beds.</p>
+  <p class="hole__meta">Par 2 · 20 ft</p>
+</li>
+<li class="hole" id="hole-05">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Roots that ripple across the green"><text class="plan__no" x="34" y="92">05</text><path d="M262 440 C262 350 140 340 148 250 C156 180 252 172 240 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M262 440 C262 350 140 340 148 250 C156 180 252 172 240 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M262 440 C262 350 140 340 148 250 C156 180 252 172 240 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M262 440 C262 350 140 340 148 250 C156 180 252 172 240 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="300" cy="260" r="46" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="0.55"/><circle cx="300" cy="260" r="4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><path d="M134 286 q12 -9 24 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.85" stroke-linecap="round" stroke-linejoin="round" /><path d="M140 262 q12 -9 24 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.85" stroke-linecap="round" stroke-linejoin="round" /><path d="M150 238 q12 -9 24 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.85" stroke-linecap="round" stroke-linejoin="round" /><rect x="253" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="262" cy="426" r="4" fill="#FBF7EE"/><circle cx="240" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M240 140 L240 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M240 94 L260 101 L240 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">26 FT</text></svg></div>
+  <p class="hole__no">Hole 05</p>
+  <h3 class="hole__name"><span class="vh">Hole 5: </span>Live Oak</h3>
+  <p class="hole__line">The roots were here first. Play around them.</p>
+  <p class="hole__meta">Par 3 · 26 ft</p>
+</li>
+<li class="hole" id="hole-06">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A slowly turning barrel"><text class="plan__no" x="34" y="92">06</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="200" cy="290" r="26" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="1"/><path d="M200 264 L200 316 M174 290 L226 290" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M232 262 a40 40 0 0 1 8 22" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M236 284 l4 0 l0 -5" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" /><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">24 FT</text></svg></div>
+  <p class="hole__no">Hole 06</p>
+  <h3 class="hole__name"><span class="vh">Hole 6: </span>The Rodeo</h3>
+  <p class="hole__line">A barrel that never stops turning. Wait for the gap.</p>
+  <p class="hole__meta">Par 3 · 24 ft</p>
+</li>
+<li class="hole" id="hole-07">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Ball rolls under a console bridge"><text class="plan__no" x="34" y="92">07</text><path d="M140 440 L140 260 L260 260 L260 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 L140 260 L260 260 L260 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 L140 260 L260 260 L260 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M140 440 L140 260 L260 260 L260 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><rect x="114" y="300" width="52" height="22" rx="3" fill="#10231D" stroke="#F2A541" stroke-width="1.5"/><circle cx="126" cy="311" r="2.4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="140" cy="311" r="2.4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="154" cy="311" r="2.4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><rect x="131" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="140" cy="426" r="4" fill="#FBF7EE"/><circle cx="260" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M260 140 L260 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M260 94 L280 101 L260 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">15 FT</text></svg></div>
+  <p class="hole__no">Hole 07</p>
+  <h3 class="hole__name"><span class="vh">Hole 7: </span>Mission Control</h3>
+  <p class="hole__line">Under the console and into the cup. Team Birdie did it in one.</p>
+  <p class="hole__meta">Par 2 · 15 ft</p>
+</li>
+<li class="hole" id="hole-08">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A drawbridge that lifts and lowers"><text class="plan__no" x="34" y="92">08</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M60 280 L340 280 M60 310 L340 310" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.55" stroke-linecap="round" stroke-linejoin="round" /><path d="M76 296 c10 -6 20 6 30 0 M300 296 c10 -6 20 6 30 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M176 280 L224 280 M176 310 L224 310" stroke="#F2A541" stroke-width="2.4" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M176 280 L176 310 M224 280 L224 310" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">32 FT</text></svg></div>
+  <p class="hole__no">Hole 08</p>
+  <h3 class="hole__name"><span class="vh">Hole 8: </span>Ship Channel</h3>
+  <p class="hole__line">The bridge goes up, the bridge comes down. Time it.</p>
+  <p class="hole__meta">Par 3 · 32 ft</p>
+</li>
+<li class="hole" id="hole-09">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Ramp over a painted car"><text class="plan__no" x="34" y="92">09</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><rect x="178" y="250" width="44" height="78" rx="14" fill="#10231D" stroke="#F2A541" stroke-width="1.5"/><path d="M184 274 L216 274 M184 304 L216 304" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="192" cy="289" r="3" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="208" cy="289" r="3" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">27 FT</text></svg></div>
+  <p class="hole__no">Hole 09</p>
+  <h3 class="hole__name"><span class="vh">Hole 9: </span>Art Car Parade</h3>
+  <p class="hole__line">Up and over a car painted by hand.</p>
+  <p class="hole__meta">Par 3 · 27 ft</p>
+</li>
+<li class="hole" id="hole-10">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Mist fans"><text class="plan__no" x="34" y="92">10</text><path d="M160 440 C160 330 240 300 240 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 440 C160 330 240 300 240 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 440 C160 330 240 300 240 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M160 440 C160 330 240 300 240 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="86" cy="380" r="6" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="1"/><path d="M96 372 q8 8 0 16 M102 367 q12 13 0 26" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="96" cy="290" r="6" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="1"/><path d="M106 282 q8 8 0 16 M112 277 q12 13 0 26" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="110" cy="200" r="6" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="1"/><path d="M120 192 q8 8 0 16 M126 187 q12 13 0 26" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><rect x="151" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="160" cy="426" r="4" fill="#FBF7EE"/><circle cx="240" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M240 140 L240 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M240 94 L260 101 L240 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">22 FT</text></svg></div>
+  <p class="hole__no">Hole 10</p>
+  <h3 class="hole__name"><span class="vh">Hole 10: </span>Humidity</h3>
+  <p class="hole__line">Mist fans across the green. You'll be glad of them.</p>
+  <p class="hole__meta">Par 2 · 22 ft</p>
+</li>
+<li class="hole" id="hole-11">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A pumpjack arm that blocks the cup on a beat"><text class="plan__no" x="34" y="92">11</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M276 214 L300 250 L324 214 Z" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.8" stroke-linecap="round" stroke-linejoin="round" /><path d="M300 214 L210 176" stroke="#F2A541" stroke-width="2.2" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M200 166 c-6 4 -6 16 6 20" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="300" cy="214" r="3.4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">25 FT</text></svg></div>
+  <p class="hole__no">Hole 11</p>
+  <h3 class="hole__name"><span class="vh">Hole 11: </span>The Derrick</h3>
+  <p class="hole__line">The pumpjack keeps its own beat. Learn it, then putt.</p>
+  <p class="hole__meta">Par 3 · 25 ft</p>
+</li>
+<li class="hole" id="hole-12">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A wave-shaped green"><text class="plan__no" x="34" y="92">12</text><path d="M130 440 C220 410 120 350 200 310 C280 270 120 230 200 190 C250 165 230 150 230 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M130 440 C220 410 120 350 200 310 C280 270 120 230 200 190 C250 165 230 150 230 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M130 440 C220 410 120 350 200 310 C280 270 120 230 200 190 C250 165 230 150 230 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M130 440 C220 410 120 350 200 310 C280 270 120 230 200 190 C250 165 230 150 230 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M86 360 c10 -7 20 7 30 0 s20 7 30 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.75" stroke-linecap="round" stroke-linejoin="round" /><path d="M270 260 c10 -7 20 7 30 0 s20 7 30 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.75" stroke-linecap="round" stroke-linejoin="round" /><path d="M96 220 c10 -7 20 7 30 0 s20 7 30 0" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.75" stroke-linecap="round" stroke-linejoin="round" /><rect x="121" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="130" cy="426" r="4" fill="#FBF7EE"/><circle cx="230" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M230 140 L230 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M230 94 L250 101 L230 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">29 FT</text></svg></div>
+  <p class="hole__no">Hole 12</p>
+  <h3 class="hole__name"><span class="vh">Hole 12: </span>Gulf Breeze</h3>
+  <p class="hole__line">A green shaped like a wave. Read it like one.</p>
+  <p class="hole__meta">Par 3 · 29 ft</p>
+</li>
+<li class="hole" id="hole-13">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A cicada buzz plays when the ball passes"><text class="plan__no" x="34" y="92">13</text><path d="M220 440 L180 290 L220 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M220 440 L180 290 L220 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M220 440 L180 290 L220 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M220 440 L180 290 L220 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="180" cy="290" r="4" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><path d="M195 275 a22 22 0 0 1 0 31" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.7555555555555555" stroke-linecap="round" stroke-linejoin="round" /><path d="M207 263 a38 38 0 0 1 0 53" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.5777777777777777" stroke-linecap="round" stroke-linejoin="round" /><path d="M218 252 a54 54 0 0 1 0 76" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round" stroke-linejoin="round" /><rect x="211" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="220" cy="426" r="4" fill="#FBF7EE"/><circle cx="220" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M220 140 L220 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M220 94 L240 101 L220 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">19 FT</text></svg></div>
+  <p class="hole__no">Hole 13</p>
+  <h3 class="hole__name"><span class="vh">Hole 13: </span>Cicada Chorus</h3>
+  <p class="hole__line">Roll past and the cicadas answer.</p>
+  <p class="hole__meta">Par 2 · 19 ft</p>
+</li>
+<li class="hole" id="hole-14">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Putt through the order window"><text class="plan__no" x="34" y="92">14</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><rect x="130" y="250" width="140" height="64" rx="8" fill="#10231D" stroke="#F2A541" stroke-width="1.5"/><rect x="184" y="250" width="32" height="64" fill="#10231D"/><path d="M184 250 L184 314 M216 250 L216 314" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="148" cy="320" r="7" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="0.7"/><circle cx="252" cy="320" r="7" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="0.7"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">26 FT</text></svg></div>
+  <p class="hole__no">Hole 14</p>
+  <h3 class="hole__name"><span class="vh">Hole 14: </span>Taco Truck</h3>
+  <p class="hole__line">One order, through the window.</p>
+  <p class="hole__meta">Par 3 · 26 ft</p>
+</li>
+<li class="hole hole--15" id="hole-15">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="A track that climbs into a full vertical loop, with the ball upside down at the top"><text class="plan__no" x="34" y="92">15</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="200" cy="292" r="40" fill="none" stroke="#F2A541" stroke-width="7" opacity="1"/><circle cx="200" cy="292" r="40" fill="none" stroke="#F2A541" stroke-width="12" opacity="0.18"/><circle cx="200" cy="252" r="6" fill="#FBF7EE" stroke="none" stroke-width="1.5" opacity="1"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">24 FT</text></svg>
+  
+  </div>
+  <p class="hole__no">Hole 15<span class="tag">Upside down</span></p>
+  <h3 class="hole__name"><span class="vh">Hole 15: </span>The Loop</h3>
+  <p class="hole__line">All the way around, then down to the cup. Opens May 15 at 10 am.</p>
+  <p class="hole__meta">Par 3 · 24 ft</p>
+</li>
+<li class="hole" id="hole-16">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Three tiny bridges, one path"><text class="plan__no" x="34" y="92">16</text><path d="M200 440 L200 360 M200 360 C120 330 120 230 200 200 M200 360 L200 140 M200 360 C280 330 280 230 200 200" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 360 M200 360 C120 330 120 230 200 200 M200 360 L200 140 M200 360 C280 330 280 230 200 200" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 360 M200 360 C120 330 120 230 200 200 M200 360 L200 140 M200 360 C280 330 280 230 200 200" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 360 M200 360 C120 330 120 230 200 200 M200 360 L200 140 M200 360 C280 330 280 230 200 200" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M126 280 L154 280" stroke="#F2A541" stroke-width="2.4" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M126 274 L126 286 M154 274 L154 286" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M186 280 L214 280" stroke="#F2A541" stroke-width="2.4" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M186 274 L186 286 M214 274 L214 286" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M246 280 L274 280" stroke="#F2A541" stroke-width="2.4" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M246 274 L246 286 M274 274 L274 286" stroke="#F2A541" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" /><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">31 FT</text></svg></div>
+  <p class="hole__no">Hole 16</p>
+  <h3 class="hole__name"><span class="vh">Hole 16: </span>Bayou City Bridges</h3>
+  <p class="hole__line">Three bridges. One of them gets you home.</p>
+  <p class="hole__meta">Par 3 · 31 ft</p>
+</li>
+<li class="hole" id="hole-17">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Fountain jets that pop up between putts"><text class="plan__no" x="34" y="92">17</text><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M200 440 L200 140" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><circle cx="200" cy="250" r="3.6" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="200" cy="250" r="10" fill="none" stroke="#F2A541" stroke-width="1" opacity="0.35"/><circle cx="200" cy="320" r="3.6" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="200" cy="320" r="10" fill="none" stroke="#F2A541" stroke-width="1" opacity="0.35"/><circle cx="170" cy="285" r="3.6" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="170" cy="285" r="10" fill="none" stroke="#F2A541" stroke-width="1" opacity="0.35"/><circle cx="230" cy="285" r="3.6" fill="#F2A541" stroke="none" stroke-width="1.5" opacity="1"/><circle cx="230" cy="285" r="10" fill="none" stroke="#F2A541" stroke-width="1" opacity="0.35"/><rect x="191" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="200" cy="426" r="4" fill="#FBF7EE"/><circle cx="200" cy="140" r="7" fill="#06120E" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 140 L200 94" stroke="#FBF7EE" stroke-width="1.2"/><path d="M200 94 L220 101 L200 108 Z" fill="#F2A541"/><path d="M372 94 L372 440 M367 94 L377 94 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="267" transform="rotate(-90 372 267)" dy="-8">21 FT</text></svg></div>
+  <p class="hole__no">Hole 17</p>
+  <h3 class="hole__name"><span class="vh">Hole 17: </span>Splash Pad</h3>
+  <p class="hole__line">The jets pop up between putts. Usually.</p>
+  <p class="hole__meta">Par 2 · 21 ft</p>
+</li>
+<li class="hole" id="hole-18">
+  <div class="hole__art"><svg class="art art--plan" viewBox="0 0 400 500" role="img" aria-label="Last putt drops into a rocket and keeps the ball"><text class="plan__no" x="34" y="92">18</text><path d="M140 440 C140 330 200 300 200 170" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 C140 330 200 300 200 170" stroke="#10231D" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M140 440 C140 330 200 300 200 170" stroke="#FBF7EE" stroke-opacity=".045" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="plan__line" d="M140 440 C140 330 200 300 200 170" stroke="#FBF7EE" stroke-opacity=".5" stroke-width="1.2" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/><path d="M200 106 C214 120 218 150 216 176 L184 176 C182 150 186 120 200 106 Z" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="1" stroke-linecap="round" stroke-linejoin="round" /><path d="M184 162 L172 182 L184 178 M216 162 L228 182 L216 178" stroke="#F2A541" stroke-width="1.5" fill="none" opacity="0.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="200" cy="140" r="5" fill="none" stroke="#F2A541" stroke-width="1.5" opacity="1"/><rect x="131" y="436" width="18" height="8" rx="1" fill="none" stroke="#FBF7EE" stroke-opacity=".75" stroke-width="1.2"/><circle cx="140" cy="426" r="4" fill="#FBF7EE"/><path d="M372 106 L372 440 M367 106 L377 106 M367 440 L377 440" stroke="#FBF7EE" stroke-opacity=".3" stroke-width="1"/><text class="plan__dim" x="372" y="273" transform="rotate(-90 372 273)" dy="-8">22 FT</text></svg></div>
+  <p class="hole__no">Hole 18</p>
+  <h3 class="hole__name"><span class="vh">Hole 18: </span>Houston, We Have a Hole</h3>
+  <p class="hole__line">The last putt drops into a rocket, and the rocket keeps the ball.</p>
+  <p class="hole__meta">Par 3 · 22 ft</p>
+</li>
+    </ol>
+  </div>
+</section>
+
+<section class="plate" id="visit" data-shot="visit" data-video data-tone="dark" aria-labelledby="visit-title">
+  <div class="plate__stage" aria-hidden="true"><video class="plate__video" data-src="film/visit.mp4" poster="film/visit.jpg" muted loop playsinline disablepictureinpicture preload="none"></video></div>
+  <div class="film__shade" aria-hidden="true"></div>
+  <div class="film__black" aria-hidden="true"></div>
+  <div class="film__copy">
+    <p class="eyebrow">Visit</p>
+    <h2 class="film__title" id="visit-title">Open late. <em>Because it's Houston.</em></h2>
+    <p class="film__text">Lights on till midnight on weekends. One ticket covers all eighteen holes.</p>
+    <div class="film__links">
+      <a class="film__link" href="#hours-panel">Hours and prices</a>
+    </div>
+  </div>
+  <p class="vh">Film: a slow drone shot of the Houston skyline at sunset, the sky orange behind the towers as the city lights come on.</p>
+  <div class="film__bar">
+      <button class="film__ctl js-film-toggle" type="button" aria-label="Pause the films" data-state="playing">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4.4" y="3.5" width="1.6" height="9"/><rect x="10" y="3.5" width="1.6" height="9"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L12.6 8z"/></svg>
+      </button>
+  </div>
+</section>
+
+<section class="panel" id="hours-panel" aria-label="Hours and prices">
+  <div class="wrap">
+    <div class="cards">
+      <article class="card" aria-labelledby="hours-title">
+        <h3 id="hours-title">Hours</h3>
+        <p class="say">Seven nights a week.</p>
+        <p class="status is-closed" id="status">Opens Saturday, May 15, 2027</p>
+        <dl class="rows" id="hours">
+          <div data-dow="1 2 3 4"><dt>Mon – Thu</dt><dd>4 pm – 10 pm</dd></div>
+          <div data-dow="5"><dt>Friday</dt><dd>4 pm – midnight</dd></div>
+          <div data-dow="6"><dt>Saturday</dt><dd>10 am – midnight</dd></div>
+          <div data-dow="0"><dt>Sunday</dt><dd>10 am – 9 pm</dd></div>
+        </dl>
+        <ul class="notes fine">
+          <li>Summer (June – August): weekdays open at 5 pm.</li>
+          <li>Last tee time is 45 minutes before closing. All times Central.</li>
+        </ul>
+      </article>
+      <article class="card" aria-labelledby="prices-title">
+        <h3 id="prices-title">Prices</h3>
+        <p class="say">One ticket. Eighteen holes.</p>
+        <dl class="rows">
+          <div><dt>Adult (13+)</dt><dd>$14</dd></div>
+          <div><dt>Kid (4–12)</dt><dd>$10</dd></div>
+          <div><dt>Under 4</dt><dd>Free</dd></div>
+          <div><dt>Family 4-pack</dt><dd>$40</dd></div>
+          <div><dt>Second round, same day</dt><dd>Half price</dd></div>
+        </dl>
+        <p class="offer"><b>Opening week</b>Kids play free with every paid adult, May 15–21, 2027.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="panel know" aria-labelledby="know-title">
+  <div class="wrap">
+    <h2 id="know-title">Good to know.</h2>
+    <ul class="grid4">
+      <li class="mini">
+        <h3>Birthday parties</h3>
+        <p class="big">Ten players. One shady table.</p>
+        <p>Up to 10 players, 18 holes each, raspas for everyone and a reserved shade table for 90 minutes.</p>
+        <p class="price"><b>$180</b>party ticket</p>
+        <a class="more" href="https://www.instagram.com/luckyloopfbla/" target="_blank" rel="noopener"><span>Message us</span><span class="vh"> (opens Instagram)</span></a>
+      </li>
+      <li class="mini">
+        <h3>The Snack Shack</h3>
+        <p class="big">Raspas, lemonade, popcorn.</p>
+        <p>A raspa is Houston's snow cone: shaved ice and syrup, eaten fast.</p>
+      </li>
+      <li class="mini">
+        <h3>Accessibility</h3>
+        <p class="big">Every hole, every player.</p>
+        <p>All 18 holes are wheelchair accessible, with paved paths, level tees, shade sails over every green, misting fans on the back nine and free parking.</p>
+      </li>
+      <li class="mini">
+        <h3>Rain policy</h3>
+        <p class="big">Lightning stops play.</p>
+        <p>If lightning closes the course, everyone on it gets a rain check for another round.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="plate" id="wall" data-shot="wall" data-video data-tone="dark" aria-labelledby="wall-title">
+  <div class="plate__stage" aria-hidden="true"><video class="plate__video" data-src="film/wall.mp4" poster="film/wall.jpg" muted loop playsinline disablepictureinpicture preload="none"></video></div>
+  <div class="film__shade" aria-hidden="true"></div>
+  <div class="film__black" aria-hidden="true"></div>
+  <div class="film__copy">
+    <p class="eyebrow">The Hole-in-One Wall</p>
+    <h2 class="film__title" id="wall-title">Ace it? <em>Make the Wall.</em></h2>
+    <p class="film__text">Every hole-in-one at Lucky Loop can end up on the Wall. One entry a month wins a free family 4-pack.</p>
+    <div class="film__links">
+      <a class="film__link" href="#aces-panel">How to enter</a>
+    </div>
+  </div>
+  <p class="vh">Film: a visitor stands at the far end of a gallery hung with framed black-and-white photographs.</p>
+  <div class="film__bar">
+      <button class="film__ctl js-film-toggle" type="button" aria-label="Pause the films" data-state="playing">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4.4" y="3.5" width="1.6" height="9"/><rect x="10" y="3.5" width="1.6" height="9"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L12.6 8z"/></svg>
+      </button>
+  </div>
+</section>
+
+<section class="panel" id="aces-panel" aria-label="The Wall and how to enter">
+  <div class="wrap">
+    <ul class="aces">
+      <li><figure class="ace"><div class="ace__art ace__art--photo"><img class="art" src="wall/ace-7.jpg" width="1120" height="800" loading="lazy" decoding="async" alt="A black ball comes to rest on the lip of the cup, a putter and a player's shoes behind it"></div><figcaption><b>Team Birdie</b><span>Ace on Hole 7, Mission Control</span></figcaption></figure></li>
+      <li><figure class="ace"><div class="ace__art ace__art--photo"><img class="art" src="wall/ace-15.jpg" width="1120" height="800" loading="lazy" decoding="async" alt="A green ball rolls up to the cup beside the yellow flag, the player's putter just behind"></div><figcaption><b>The Putt Squad</b><span>Ace on Hole 15, The Loop</span></figcaption></figure></li>
+      <li><figure class="ace ace--you"><div class="ace__art" aria-hidden="true">?</div><figcaption><b>Your team</b><span>Your ace here</span></figcaption></figure></li>
+    </ul>
+    <ol class="steps" aria-label="How to enter, in three steps">
+      <li><p class="n">Step 1</p><h3>Film the drop.</h3><p>Parents: film the ball dropping into the cup. No faces needed.</p></li>
+      <li><p class="n">Step 2</p><h3>Post and tag.</h3><p>Post it with <span class="hash">#TeeOffAtLuckyLoop</span> and tag <span class="hash">@luckyloopfbla</span>.</p></li>
+      <li><p class="n">Step 3</p><h3>Make the Wall.</h3><p>Each month we draw one entry. The winner gets a free family 4-pack.</p></li>
+    </ol>
+
+    <details class="rules" id="rules">
+      <summary><div><h3>Official rules</h3><p>The Wall is a monthly drawing. Here is every rule.</p></div><span class="plus" aria-hidden="true"></span></summary>
+      <div class="rules__body">
+        <div><h4>The basics</h4><p>OFFICIAL RULES (SHORT VERSION): NO PURCHASE NECESSARY. A purchase does not improve your chances of winning. Open to legal U.S. residents 18 and older. Kids may appear in clips, but a parent or guardian must post the entry.</p></div>
+        <div><h4>How to enter</h4><p>To enter, post a video of a hole-in-one at Lucky Loop with #TeeOffAtLuckyLoop and tag @luckyloopfbla during the month. To enter without playing, send us a direct message with your name and "Wall entry" (one free entry per person per month).</p></div>
+        <div><h4>The drawing</h4><p>Each month, Lucky Loop staff draw one winner at random from all eligible entries within 5 days after the month ends and notify the winner by direct message. The winner must reply within 7 days or an alternate is drawn.</p></div>
+        <div><h4>Prize and odds</h4><p>Prize: one family 4-pack (four rounds of mini golf, approximate retail value $40). Odds depend on the number of entries. Void where prohibited.</p></div>
+        <div><h4>Instagram and Meta</h4><p>This promotion is not sponsored, endorsed or administered by, or associated with, Instagram or Meta. By entering, each entrant fully releases Instagram and Meta from any liability related to this promotion.</p></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="plate" id="end" data-shot="end" data-video data-tone="dark" aria-labelledby="end-title">
+  <div class="plate__stage" aria-hidden="true"><video class="plate__video" data-src="film/end.mp4" poster="film/end.jpg" muted loop playsinline disablepictureinpicture preload="none"></video></div>
+  <div class="film__shade" aria-hidden="true"></div>
+  <div class="film__black" aria-hidden="true"></div>
+  <div class="film__copy">
+    <p class="eyebrow">Opening Saturday, May 15</p>
+    <h2 class="film__title" id="end-title">Eighteen holes. <span>One loop.</span> <em>Open late.</em></h2>
+    <p class="film__text">First tee time at 10 am Central.</p>
+    <div class="film__links">
+      <a class="film__link" href="#visit">Plan a visit</a>
+      <a class="film__link" href="https://www.instagram.com/luckyloopfbla/" target="_blank" rel="noopener">Follow @luckyloopfbla<span class="vh"> (opens Instagram)</span></a>
+    </div>
+  </div>
+  <p class="vh">Film: in slow motion against a dark backdrop, a putter swings through and sends a white ball across the turf.</p>
+  <div class="film__bar">
+      <button class="film__ctl js-film-toggle" type="button" aria-label="Pause the films" data-state="playing">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4.4" y="3.5" width="1.6" height="9"/><rect x="10" y="3.5" width="1.6" height="9"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L12.6 8z"/></svg>
+      </button>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <p><b>Instagram</b><a href="https://www.instagram.com/luckyloopfbla/" target="_blank" rel="noopener">@luckyloopfbla</a></p>
+      <p><b>Phone</b>(713) 555-0115</p>
+      <p><b>Hashtag</b>#TeeOffAtLuckyLoop</p>
+      <p><b>Address</b>1 Lucky Loop Lane, Houston, TX</p>
+    </div>
+    <div class="foot__base">
+      <p>FBLA class project. Lucky Loop is fictional: the street is made up, and so is the course.</p>
+      <p>Illustrations drawn for this project.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // ---- countdown ----
+  const target = Date.parse('2027-05-15T10:00:00-05:00');
+  const els = {}; document.querySelectorAll('#count [data-u]').forEach(e => els[e.dataset.u] = e);
+  const pad = n => String(n).padStart(2, '0');
+  function tick() {
+    let t = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    els.d.textContent = Math.floor(t / 86400);
+    els.h.textContent = pad(Math.floor(t % 86400 / 3600));
+    els.m.textContent = pad(Math.floor(t % 3600 / 60));
+    els.s.textContent = pad(t % 60);
+  }
+  tick(); setInterval(tick, 1000);
+
+  // ---- hours: highlight today (Central time) ----
+  try {
+    const now = new Date();
+    const wd = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'short' }).format(now);
+    const dow = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(wd);
+    document.querySelectorAll('#hours [data-dow]').forEach(r => {
+      if (r.dataset.dow.split(' ').includes(String(dow))) r.classList.add('is-today');
+    });
+    if (now >= target) {
+      const st = document.getElementById('status');
+      st.textContent = 'Open seven nights a week'; st.classList.remove('is-closed');
+    }
+  } catch (e) {}
+
+  // ---- a link to #rules opens the rules panel ----
+  const rules = document.getElementById('rules');
+  const openRules = () => { if (location.hash === '#rules') rules.open = true; };
+  openRules(); addEventListener('hashchange', openRules);
+  document.querySelectorAll('a[href="#rules"]').forEach(a => a.addEventListener('click', () => { rules.open = true; }));
+})();
+</script>
+<script>
+// ---- site motion: the header bar, the rail of holes, pictures fading in, the rules drawer ----
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = 'IntersectionObserver' in window;
+
+  // header: bare while a film is under it, a chalk bar over everything else
+  const nav = document.querySelector('.nav'), plates = [...document.querySelectorAll('.plate')];
+  if (nav) {
+    let queued = false;
+    const check = () => { queued = false; const h = nav.offsetHeight; const under = plates.find(p => { const r = p.getBoundingClientRect(); return r.top <= h * .5 && r.bottom > h; }); nav.classList.toggle('is-solid', !under); nav.classList.toggle('is-ink', !!under && under.dataset.tone === 'light'); };
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask); check();
+  }
+
+  // pacing: each section fades in as a whole when it takes the screen, its parts a beat apart
+  if (io && !reduce) {
+    const blocks = [...document.querySelectorAll('.panel, .plate')];
+    blocks.forEach(b => [...(b.classList.contains('plate') ? b.querySelector('.film__copy') : b.querySelector('.wrap')).children].forEach((el, i) => el.style.setProperty('--i', i)));
+    document.documentElement.classList.add('paced');
+    let heard = false;
+    const arrive = new IntersectionObserver(es => { heard = true; es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); arrive.unobserve(e.target); } }); }, { rootMargin: '0px 0px -22% 0px' });
+    blocks.forEach(b => arrive.observe(b));
+    setTimeout(() => { if (!heard) blocks.forEach(b => b.classList.add('is-in')); }, 3000);
+  }
+
+  // the rail: arrows move it a few holes at a time, and the counter follows
+  const rail = document.getElementById('holes'), prev = document.getElementById('holes-prev'), next = document.getElementById('holes-next'), at = document.getElementById('holes-at');
+  if (rail && prev && next) {
+    const step = () => { const c = rail.firstElementChild; return c ? c.getBoundingClientRect().width + 3 : 300; };
+    const sync = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      prev.disabled = rail.scrollLeft < 4; next.disabled = rail.scrollLeft > max - 4;
+      at.textContent = String(Math.min(18, Math.round(rail.scrollLeft / step()) + 1)).padStart(2, '0');
+    };
+    const move = dir => rail.scrollBy({ left: dir * step() * Math.max(1, Math.floor(rail.clientWidth / step()) - 1), behavior: reduce ? 'auto' : 'smooth' });
+    prev.addEventListener('click', () => move(-1)); next.addEventListener('click', () => move(1));
+    rail.addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync); sync();
+  }
+
+  // pictures fade in as they arrive; the words never wait
+  if (io && !reduce) {
+    const arts = document.querySelectorAll('.hole__art .art, .ace__art .art');
+    document.documentElement.classList.add('fade-in');
+    const show = el => el.classList.remove('is-waiting');
+    const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { show(e.target); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    arts.forEach(a => { a.classList.add('is-waiting'); seen.observe(a); });
+    setTimeout(() => arts.forEach(show), 8000);
+  }
+
+  // rules drawer: open and close on the same curve
+  const rules = document.getElementById('rules');
+  if (rules && !reduce && rules.animate) {
+    const body = rules.querySelector('.rules__body'), summary = rules.querySelector('summary');
+    const ease = { duration: 350, easing: 'cubic-bezier(.45,0,.55,1)' };
+    let busy = null;
+    const open = () => { rules.open = true; rules.classList.remove('is-closing'); if (busy) busy.cancel(); busy = body.animate({ height: ['0px', body.scrollHeight + 'px'], opacity: [0, 1] }, ease); };
+    summary.addEventListener('click', e => {
+      e.preventDefault();
+      if (!rules.open || rules.classList.contains('is-closing')) return open();
+      rules.classList.add('is-closing'); if (busy) busy.cancel();
+      busy = body.animate({ height: [body.offsetHeight + 'px', '0px'], opacity: [1, 0] }, ease);
+      busy.onfinish = () => { rules.open = false; rules.classList.remove('is-closing'); };
+    });
+  }
+})();
+</script>
+<script>
+// ---- the films: every plate is real footage that plays only while it fills the screen; if a clip can't load, its still stays up ----
+(() => {
+  const plates = [...document.querySelectorAll('.plate[data-video]')];
+  if (!plates.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const toggles = [...document.querySelectorAll('.js-film-toggle')];
+  const replay = document.getElementById('film-replay');
+  const bar = document.getElementById('film-progress');
+  const hero = document.querySelector('#top .plate__video');
+  document.querySelectorAll('.mark span').forEach((s, i) => s.style.setProperty('--k', i));
+  let playing = !reduce;
+  const still = p => { const v = p.querySelector('.plate__video'); if (!v) return; p.style.setProperty('--still', 'url("' + v.getAttribute('poster') + '")'); p.classList.add('is-still'); p.classList.remove('is-rolling'); v.remove(); };
+  const load = v => { if (v && !v.src && v.dataset.src) { v.src = v.dataset.src; v.load(); } };
+  const roll = (p, on) => {
+    const v = p.querySelector('.plate__video'); if (!v) return;
+    p.classList.toggle('is-on', on);
+    if (on) { load(v); if (v.readyState >= 2) p.classList.add('is-rolling'); if (playing) { const go = v.play(); if (go && go.catch) go.catch(() => {}); } }
+    else v.pause();
+  };
+  plates.forEach(p => {
+    const v = p.querySelector('.plate__video');
+    v.addEventListener('error', () => still(p), { once: true });
+    v.addEventListener('loadeddata', () => { if (p.classList.contains('is-on')) p.classList.add('is-rolling'); });
+  });
+  const setPlaying = on => {
+    playing = on;
+    toggles.forEach(b => { b.dataset.state = on ? 'playing' : 'paused'; b.setAttribute('aria-label', on ? 'Pause the films' : 'Play the films'); });
+    plates.forEach(p => { const v = p.querySelector('.plate__video'); if (!v) return; if (on && p.classList.contains('is-on')) v.play().catch(() => {}); else v.pause(); });
+  };
+  toggles.forEach(b => b.addEventListener('click', () => setPlaying(!playing)));
+  if (replay && hero) replay.addEventListener('click', () => { hero.currentTime = 0; setPlaying(true); });
+  if (bar && hero) { const tick = () => { if (hero.duration) bar.style.transform = 'scaleX(' + (hero.currentTime / hero.duration).toFixed(4) + ')'; requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+  if ('IntersectionObserver' in window) {
+    const near = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) load(e.target.querySelector('.plate__video')); }), { rootMargin: '100% 0px' });
+    const watch = new IntersectionObserver(es => es.forEach(e => roll(e.target, e.intersectionRatio > .35)), { threshold: [0, .35, .6] });
+    plates.forEach(p => { near.observe(p); watch.observe(p); });
+  } else plates.forEach(p => roll(p, true));
+  if (reduce) setPlaying(false);
+  document.addEventListener('visibilitychange', () => plates.forEach(p => { const v = p.querySelector('.plate__video'); if (!v) return; if (document.hidden) v.pause(); else if (p.classList.contains('is-on') && playing) v.play().catch(() => {}); }));
+})();
+</script>
+</body>
+</html>
